@@ -1,0 +1,7 @@
+.vscode/
+HearingExam/
+Include/
+Lib/
+Scripts/
+pyvenv.cfg
+nls_app.py
