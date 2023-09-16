@@ -6,3 +6,10 @@ Scripts/
 pyvenv.cfg
 nls_app.py
 __pycache__/
+bin/
+include/
+lib/
+lib64/
+Lib64/
+share/
+lib64
