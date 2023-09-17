@@ -11,6 +11,14 @@ import re
 from datetime import datetime
 import nls_app
 
+from enum import Enum
+
+class ExamLx(Enum):
+    听英语写汉语 = 0
+    听汉语写英语 = 1
+    随机 = 2
+
+
 class HearingExam():
     appKey = nls_app.appKey
     accessKeyId = nls_app.accessKeyId
@@ -55,7 +63,7 @@ class HearingExam():
                 return file.read()
         else:
             # print("not cached")
-            url = "https://nls-gateway-cn-shanghai.aliyuncs.com/stream/v1/tts"
+            url = "https://nls-gateway-cn-beijing.aliyuncs.com/stream/v1/tts"
             headers = {
                 "Content-Type": "application/json"
             }
@@ -69,6 +77,7 @@ class HearingExam():
                 "speech_rate": speechRate,
                 "pitch_rate": pitchRate,
             }
+            print(body)
             resp = requests.post(url, json=body, headers=headers)
             if resp.status_code == 200:
                 data = resp.content
@@ -91,9 +100,9 @@ class HearingExam():
             os.remove(tmp)
         output.export(outputFile)
     # flag 0 听英语写汉语 1 听汉语写英语 2 随机
-    def genExams(self, serial: str, flag: int):
+    def genExams(self, serial: str, flag:ExamLx):
         # region 准备输出目录
-        outputDir = os.path.join(self.outputDir, serial)
+        outputDir = os.path.join(self.outputDir, f'{serial}_{flag.name}')
         if os.path.isdir(outputDir):
             for file in os.listdir(outputDir):
                 os.remove(os.path.join(outputDir, file))
@@ -101,7 +110,6 @@ class HearingExam():
             os.mkdir(outputDir)
         # endregion
         with open(self.file, "r", encoding="utf-8") as file:
-            audios = []
             # 去掉无用行
             def filterLines(line):
                 if line:
@@ -120,14 +128,15 @@ class HearingExam():
                 random.shuffle(_lines)
                 _lines = _lines[0:self.countPerExam]
                 text = f"<speak bgm='http://nls.alicdn.com/bgm/2.wav' backgroundMusicVolumn='30' rate='-200' ><break time='2s' /><w>{self.student}</w>同学，你好，现在是听力测试时间。请你根据听到的中文或英文写出对应的翻译。每个词说两遍。<break time='1s' /></speak>"
-                audios.append(self.getTtsData(text, "laomei"))
+                audios = [self.getTtsData(text, "laomei")]
                 answers.append(f"\nExam {index} \n")
                 _answers = []
                 # 循环处理每个单词
                 for i, line in enumerate(_lines):
                     ds = list(filter(lambda x: x, re.split("[|]+", line)))[0:2]
-                    s = ['betty','brain']
-                    if flag == 1 or (flag == 2 and random.randint(-10, 9) >= 0):
+                    s = ['betty','brian']
+
+                    if flag == ExamLx.听汉语写英语 or (flag == ExamLx.随机 and random.randint(-10, 9) >= 0):
                         s = ['zhiyuan','zhida']
                         ds.reverse()
                     print(ds)
@@ -144,6 +153,7 @@ class HearingExam():
                 self.combineDatas(audios, os.path.join(
                     outputDir, f"Exam_{index}.mp3"))
                 answers.append(' '.join(_answers))
+                answers.append('\n')
                 index = index + 1
             # 写入答案
             with open(os.path.join(outputDir, f"Answer.txt"), "w", encoding="utf-8") as file:
@@ -171,9 +181,9 @@ def main():
     exam = HearingExam(student, file, examCount, countPerExam, "HearingExam")
     flag = input('请输入测试类型(0 听英文写汉语 1 听汉语写英文 2 随机 )[0]:')
     if not flag.isnumeric():
-        flag = 0
+        flag = ExamLx(0)
     else:
-        flag = int(flag)
+        flag = ExamLx(int(flag))
     serial = datetime.now().strftime('%Y%m%d%H%M%S')
     exam.genExams(serial, flag)
 
