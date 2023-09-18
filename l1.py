@@ -134,7 +134,7 @@ class HearingExam():
                 # 循环处理每个单词
                 for i, line in enumerate(_lines):
                     ds = list(filter(lambda x: x, re.split("[|]+", line)))[0:2]
-                    s = ['betty','brian']
+                    s = ['donna','luca']
 
                     if flag == ExamLx.听汉语写英语 or (flag == ExamLx.随机 and random.randint(-10, 9) >= 0):
                         s = ['zhiyuan','zhida']
@@ -160,12 +160,16 @@ class HearingExam():
                 file.writelines(answers)
 
 def main():
-    student = input('请输入学生姓名:')
-    if student == '':
+    student = input('请输入学生姓名[0 翟静逸 1 翟绍祖]:')
+    if student == '0':
         student = '翟静逸'
+    elif student == '1':
+        student = '翟绍祖'
+    else:
+        raise BaseException('学生无效')
+    
     file = input("输入测试题库文件:")
-    if file == '':
-        file = '7_1.txt'
+    file = f'HearingExam/Dict/{file}.txt'
     if not os.path.isfile(file):
         raise BaseException(f'{file}不是有效的文件')
     examCount = input("需要生成的测试数量[5]:")
