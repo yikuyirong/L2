@@ -1,6 +1,6 @@
 .vscode/
-!HearingExam/Dict/
 HearingExam/
+!HearingExam/Dict/
 Include/
 Lib/
 Scripts/
