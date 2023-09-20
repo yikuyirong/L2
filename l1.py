@@ -1,6 +1,6 @@
 
-import requests
-import requests_async
+# import requests
+# import requests_async
 from aliyunsdkcore.client import AcsClient
 from aliyunsdkcore.request import CommonRequest
 import json
@@ -13,6 +13,9 @@ from datetime import datetime
 import nls_app
 import asyncio
 import aiofile
+import aiohttp
+import copy
+
 
 from enum import Enum
 
@@ -56,7 +59,6 @@ class HearingExam():
 
     # 获取语音合成数据
     async def getTtsData_async(self, text, voice="Xiaoyun", volumn=50, speechRate=0, pitchRate=0):
-        print(text)
         key = f"{text}_{voice}_{volumn}_{speechRate}_{pitchRate}"
         key_md5 = hashlib.md5(key.encode()).hexdigest()
         cacheDir = os.path.join(self.outputDir, "cache")
@@ -84,18 +86,26 @@ class HearingExam():
                 "speech_rate": speechRate,
                 "pitch_rate": pitchRate,
             }
-            print(body)
-            resp = await requests_async.post(url, json=body, headers=headers)
-            if resp.status_code == 200:
-                data = resp.content
-                async with aiofile.async_open(cache_file, "wb") as file:
-                    await file.write(data)
-                return data
-            else:
-                raise BaseException(resp.raise_for_status())
+            
+            # print(body)
+
+            async with aiohttp.ClientSession() as client:
+                resp = await client.post(url,json=body,headers=headers)
+                if resp.status == 200:
+                    data = await resp.content.read()
+                    async with aiofile.async_open(cache_file, "wb") as file:
+                        await file.write(data)
+                    return data
+                else:
+                    raise BaseException(resp.raise_for_status())
+
+            # resp = await requests_async.post(url,  json=body, headers=headers)
 
     # 合并音频文件
     async def combineDatas_async(self, datas, outputFile):
+        
+        print(f'正在合成 {outputFile} ...')
+        
         output = None
         for data in datas:
             tmp = hashlib.md5(data).hexdigest() + ".mp3"
@@ -109,6 +119,7 @@ class HearingExam():
 
         output.export(outputFile)
         
+        print(f'合成完毕 {outputFile}')
 
     # flag 0 听英语写汉语 1 听汉语写英语 2 随机
     async def genExams_async(self, outputDir, flag:ExamLx , count:int = 1):
@@ -116,8 +127,8 @@ class HearingExam():
         # region 准备输出目录
         outputDir = os.path.join(self.outputDir, outputDir)
         if os.path.isdir(outputDir):
-            for file in os.listdir(outputDir):
-                os.remove(os.path.join(outputDir, file))
+            for afile in os.listdir(outputDir):
+                os.remove(os.path.join(outputDir, afile))
         else:
             os.mkdir(outputDir)
         # endregion
@@ -125,8 +136,11 @@ class HearingExam():
         #region 拿到所有行
         
         lines = []
-
+        
         with open(self.file, "r", encoding="utf-8") as file:
+            
+            lines = file.readlines()
+
             # 去掉无用行
             def filterLines(line):
                 if line:
@@ -134,28 +148,24 @@ class HearingExam():
                 else:
                     return False
             # 取所有行
-            lines = file.readlines()
             lines = [line.rstrip() for line in lines]
             lines = list(filter(filterLines, lines))
 
-        #endregion
+            #endregion
 
-        index = 1
-        answers = [f'英语测试答案 {outputDir} \n']
         
         #生成测试，返回答案
         async def gen_exam_async(index)->str:
 
-            _lines = lines[:]
-            # 打乱顺序
-            random.shuffle(_lines)
-            _lines = _lines[0:self.countPerExam]
+            random.shuffle(lines)
+
+            _lines = lines[0:self.countPerExam]
 
             text = f"<speak bgm='http://nls.alicdn.com/bgm/2.wav' backgroundMusicVolumn='30' rate='-200' ><break time='2s' /><w>{self.student}</w>同学，你好，现在是听力测试时间。请你根据听到的中文或英文写出对应的翻译。每个词说两遍。<break time='1s' /></speak>"
             audios = [await self.getTtsData_async(text, "Aitong")]
             
             #测试答案
-            _answers = [f"Exam {index} \n"]
+            _answers = [f"Exam {index+1} \n"]
 
             # 循环处理每个单词
             for i, line in enumerate(_lines):
@@ -174,25 +184,35 @@ class HearingExam():
 
                 text = f"<speak>{ds[0]}<break time='8s' /></speak>"
                 audios.append(await self.getTtsData_async(text, s[1]))
+                
+                answer = f'{i+1}. {" ".join(ds)} '
+                
+                print(f'Exam {index+1} : {answer}')
 
-                _answers.append(f'{i+1}. {" ".join(ds)} ')
+                _answers.append(answer)
+                
+                
 
             
             text = "本次测试结束"
-            audios.append(await self.getTtsData(text, "Aitong"))
+            audios.append(await self.getTtsData_async(text, "Aitong"))
 
             # 合成语音
-            self.combineDatas_async(audios, os.path.join(
-                outputDir, f"Exam_{index}.mp3"))
+            await self.combineDatas_async(audios, os.path.join(
+                outputDir, f"Exam_{index+1}.mp3"))
             
             return ' '.join(_answers)
         
         
-        answers.append(await asyncio.gather( [asyncio.create_task(gen_exam_async(i)) for i in range(count) ] )) 
+        answers = [f'英语测试答案 {outputDir} \n']
+        
+        for answer in await asyncio.gather( *[asyncio.create_task(gen_exam_async(i)) for i in range(count) ] ):
+            answers.append(answer)
+
 
         # 写入答案
-        async with aiofile.async_open(os.path.join(outputDir, f"Answer.txt"), "w", encoding="utf-8") as file:
-                await file.writelines(answers)
+        async with aiofile.async_open(os.path.join(outputDir, f"Answer.txt"), "w", encoding="utf-8") as afile:
+                await afile.write('\n\n'.join(answers))
 
 async def main_async():
     
@@ -229,9 +249,9 @@ async def main_async():
         flag = ExamLx(int(flag))
 
     outputDir = f"{student}_{datetime.now().strftime('%Y%m%d%H%M%S')}_{flag.name}"
-    exam.genExams(outputDir, flag,examCount)
+
+    await exam.genExams_async(outputDir, flag,examCount)
 
 if __name__ == '__main__':
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main_async())
-    loop.close()
+    
+    asyncio.run(main_async())
