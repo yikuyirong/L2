@@ -1,16 +1,16 @@
 good|好的
 morning|早晨；上午
-Good morning!   早上好！
+Good morning!|||早上好！
 hi|(用于打招呼)嗨；喂
 hello|你好；喂
 afternoon|下午
-Good afternoon!  下午好！
+Good afternoon!||下午好！
 evening|晚上；傍晚
-Good evening!  晚上好！
+Good evening!||晚上好！
 how|怎样；如何
 are|是
 you|你；你们
-How are you?   你好吗？
+How are you?|||你好吗？
 I|我
 am|是
 fine|健康的；美好的
@@ -22,7 +22,7 @@ is|是
 this|这；这个
 in|(表示使用语言、材料等)用；以
 English|英格兰的；英语的
-in English   用英语
+in English|||用英语
 map|地图
 cup|杯子
 ruler|尺；直尺
@@ -79,21 +79,21 @@ number|号码；数字
 phone|电话；电话机
 telephone number|电话号码
 first|第一
-first name 名字
+first name|名字
 last|最后的；末尾的
-last name 姓
+last name|姓
 friend|朋友
 China|中国
 middle|中间的；中间
 school|学校
-middle school 中学；初中
+middle school|中学；初中
 sister|姐；妹
 mother|母亲；妈妈
 father|父亲；爸爸
 parent|父（母）亲
 brother|兄；弟
 grandmother|（外）祖母；奶奶
-grandfather|(外)祖父；爷爷； 
+grandfather|(外)祖父；爷爷；
 grandparent|祖父（母）；
 family|家；家庭
 those|那些
@@ -126,7 +126,7 @@ pencil|铅笔
 book|书
 eraser|橡皮
 box|箱；盒
-pencil box 铅笔盒；文具盒
+pencil box|铅笔盒；文具盒
 schoolbag|书包
 dictionary|词典；字典
 his|他的
@@ -134,14 +134,14 @@ mine|我的
 hers|她的
 excuse|原谅；宽恕
 me|(I的宾格)我
-excuse me 劳驾；请原谅
+excuse me|劳驾；请原谅
 thank|感谢；谢谢
 teacher|老师；教师
 about|关于
-What about...?(询问消息或提出建议..怎么样？
+What about...? |询问消息或提出建议..怎么样？
 yours|你的；你们的
 for|为了；给；对
-thank you for... 为......而感谢
+thank you for...|为......而感谢
 help|帮助；援助
 welcome|受欢迎的
 You're welcome|别客气。
@@ -150,14 +150,14 @@ watch|表；手表
 computer|计算机；电脑
 game|游戏；运动；比赛
 card|卡片
-ID card 学生卡；身份证
+ID card|学生卡；身份证
 notebook|笔记本
 ring|戒指
 bag|袋；包
 in|在......里
 library|图书馆
 ask|请求；要求；询问
-ask...for... | 请求；恳求(给予)
+ask...for... |请求；恳求(给予)
 find|(过去分词 found)找到；发现
 some|一些；某些
 classroom|教室
@@ -177,7 +177,7 @@ chair|椅子
 on|在.......上
 under|在.......下
 come|来；来到
-come on 快点儿
+come on|快点儿
 desk|书桌
 think|认为；想；思考
 room|房间
@@ -190,10 +190,10 @@ radio|收音机；无线电广播
 clock|时钟
 tape|磁带；录音带；录像带
 player|播放机
-tape player 录音机
+tape player|录音机
 model|模型
 plane|飞机
-model plane 飞机模型
+model plane|飞机模型
 tidy|整洁的；井井有条的
 but|但是
 our|我们的
@@ -207,7 +207,7 @@ ball|球
 ping-pong|乒乓球
 bat|球棒；球拍
 soccer|（英式）足球
-soccer ball (英式)足球
+soccer ball|(英式)足球
 volleyball|排球
 basketball|篮球
 hey|嘿；喂
@@ -253,7 +253,7 @@ bread|面包
 birthday|生日
 dinner|(中午或晚上吃的)正餐
 week|周；星期
-think about 思考；思索
+think about|思考；思索
 food|食物
 sure|当然；肯定；一定
 How about...? |(提出建议)......怎么样？
@@ -300,7 +300,7 @@ need|需要
 look|看；看上去
 pair|一双；一对
 take|买下；拿；取
-Here you are. 给你。
+Here you are.|给你。
 ten|十
 eleven|十一
 twelve|十二
@@ -358,13 +358,13 @@ thing|东西；事情
 term|学期
 busy|忙碌的；无暇的
 time|时间
-Have a good time! |(表示祝愿) 过得愉快！
+Have a good time! |(表示祝愿)过得愉快！
 there|(在)那里
 
 favorite|特别喜爱的(人或事物)
 subject|学科；科目
 science|科学
-P.E.|(=physical education)体育
+P.E.|体育
 music|音乐；乐曲
 math|数学
 Chinese|语文；汉语中国的
@@ -375,7 +375,7 @@ because|因为
 Monday|星期一
 Friday|星期五
 Saturday|星期六
-for sure 无疑；肯定
+for sure|无疑；肯定
 free|空闲的
 cool|妙极的；酷的
 Tuesday|星期二
@@ -386,7 +386,7 @@ A.M.|上午
 P.M.|下午；午后
 useful|有用的；有益的
 from|开始
-from...to... 从......到......
+from...to...|从......到......
 Mrs.|太太；夫人
 finish|完成；做好
 lesson|课；一节课
