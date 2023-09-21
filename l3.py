@@ -146,7 +146,7 @@ def main():
         
     font = r'./fonts/MSYH.TTC'
 
-    file_infos = [genQuestionPage(dir, i + 1,  f"{(start+ datetime.timedelta(days=i)).strftime('%Y-%m-%d')} 开始时间______________ 结束时期______________"   ,font) for i in range(0, int(pagenum))]
+    file_infos = [genQuestionPage(dir, i + 1,  f"{(start+ datetime.timedelta(days=i)).strftime('%Y-%m-%d')} 开始时间______________ 结束时间______________"   ,font) for i in range(0, int(pagenum))]
 
     files = list(map(lambda x: x[0], file_infos))
 
