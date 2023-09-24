@@ -1,6 +1,3 @@
-
-
-import requests_async
 import asyncio
 import aiohttp
 
@@ -24,7 +21,7 @@ async def getData_async():
             async with aiohttp.ClientSession() as client:
                 resp = await client.get(url)
             
-                print(resp.content) 
+                print(resp.content)
     
     
 
