@@ -32,10 +32,33 @@ def getEnglishTests():
             words.append(''.zfill(random.randint(4, 10)))
 
         yield (' '.join(words),' '.join(words))
+        
+def getShiCiTest():
+    
+    shicis = []
+    with open('./ShiCiExam/Dicts/source.txt',encoding='utf-8') as file:
+        shicis = file.readlines()
+        
+        
+
+    shicis = list(filter(lambda s: not s.startswith('#'),shicis))
+
+    random.shuffle(shicis)
+    
+    index = 0
+    
+    while True:
+        
+        shici = shicis[index % len(shicis)]        
+        cs = shici.split('|')
+        index = index + 1
+        yield(f'[{cs[0]}]{cs[1]}',f'{cs[0]}{cs[1]}{cs[2]}{cs[3]}\n{cs[4]}')
+    
 
 if __name__ == '__main__':
-    g = getRandEquation()
+    # g = getRandEquation()
     # g = getEnglishTests()
+    g = getShiCiTest()
     
     for x in range(10):
         print(next(g))

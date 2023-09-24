@@ -161,7 +161,7 @@ class HearingExam():
 
             _lines = lines[0:self.countPerExam]
 
-            text = f"<speak bgm='http://nls.alicdn.com/bgm/2.wav' backgroundMusicVolumn='30' rate='-200' ><break time='2s' /><w>{self.student}</w>同学，你好，现在是听力测试时间。请你根据听到的中文或英文写出对应的翻译。每个词说两遍。<break time='1s' /></speak>"
+            text = f"<speak bgm='http://nls.alicdn.com/bgm/2.wav' backgroundMusicVolumn='30' rate='-200' ><break time='2s' /><w>{self.student}</w>同学，你好，现在是听力测试时间。请根据听到的题目写下内容，每题说两遍。<break time='1s' /></speak>"
             audios = [await self.getTtsData_async(text, "Aitong")]
             
             #测试答案

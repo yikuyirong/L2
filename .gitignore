@@ -15,3 +15,5 @@ Lib64/
 share/
 lib64
 MathExam/
+ShiCiExam/*
+!ShiCiExam/Dicts
